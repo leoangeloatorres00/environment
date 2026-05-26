@@ -1,5 +1,7 @@
 cp .env.example .env
 
+cp .env.example .env2
+
 echo "\nAPP_OWNER=$APP_OWNER\n" >> .env
 
 sed -i "s/^APP_NAME=.*/APP_NAME=$APP_NAME/" .env

@@ -4,8 +4,8 @@ on:
   push:
     branches: [ "main" ]
 
-jobs:
-  tests:
+jobs:         
+  deploy:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Code
@@ -22,4 +22,14 @@ jobs:
       - name: Update variables to .env
         run: |
           sed -i "s/^APP_NAME=.*/APP_NAME=${{ secrets.APP_NAME }}/" .env
-          
+
+      - name: Deployment to Server via SSH
+        if: github.ref == 'refs/heads/main'
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          username:  ${{ secrets.SSH_USER }}
+          key:  ${{ secrets.SSH_PRIVATE_KEY }}
+          script: |
+            cd /var/www/environment 
+            git pull origin main

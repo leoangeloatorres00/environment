@@ -17,11 +17,12 @@ jobs:
         env:
           APP_NAME: ${{ secrets.APP_NAME }}
           APP_OWNER: ${{ secrets.APP_OWNER }}
+          MAIL_SENDER: ${{ secrets.MAIL_SENDER }}
         with:
           host: ${{ secrets.SSH_HOST }}
           username:  ${{ secrets.SSH_USER }}
           key:  ${{ secrets.SSH_PRIVATE_KEY }}
-          envs: APP_NAME,APP_OWNER
+          envs: APP_NAME,APP_OWNER,MAIL_SENDER
           script: |
             cd /var/www/environment 
             git pull origin main

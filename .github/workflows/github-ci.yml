@@ -14,15 +14,14 @@ jobs:
       - name: Deployment to Server via SSH
         if: github.ref == 'refs/heads/main'
         uses: appleboy/ssh-action@v1.0.3
+        env:
+          APP_NAME: ${{ secrets.APP_NAME }}
+          APP_OWNER: ${{ secrets.APP_OWNER }}
         with:
           host: ${{ secrets.SSH_HOST }}
           username:  ${{ secrets.SSH_USER }}
           key:  ${{ secrets.SSH_PRIVATE_KEY }}
           envs: APP_NAME,APP_OWNER
-        env:
-          APP_NAME: ${{ secrets.APP_NAME }}
-          APP_OWNER: ${{ secrets.APP_OWNER }}
-        with:
           script: |
             cd /var/www/environment 
             git pull origin main

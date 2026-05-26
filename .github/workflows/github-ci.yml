@@ -11,6 +11,17 @@ jobs:
       - name: Checkout Code
         uses: actions/checkout@v4
 
+      - name: Deployment to Server via SSH
+        if: github.ref == 'refs/heads/main'
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          username:  ${{ secrets.SSH_USER }}
+          key:  ${{ secrets.SSH_PRIVATE_KEY }}
+          script: |
+            cd /var/www/environment 
+            git pull origin main
+            
       - name: Copy .env file
         run: |
           cp .env.example .env
@@ -22,14 +33,3 @@ jobs:
       - name: Update variables to .env
         run: |
           sed -i "s/^APP_NAME=.*/APP_NAME=${{ secrets.APP_NAME }}/" .env
-
-      - name: Deployment to Server via SSH
-        if: github.ref == 'refs/heads/main'
-        uses: appleboy/ssh-action@v1.0.3
-        with:
-          host: ${{ secrets.SSH_HOST }}
-          username:  ${{ secrets.SSH_USER }}
-          key:  ${{ secrets.SSH_PRIVATE_KEY }}
-          script: |
-            cd /var/www/environment 
-            git pull origin main

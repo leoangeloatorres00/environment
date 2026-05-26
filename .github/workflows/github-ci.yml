@@ -18,18 +18,13 @@ jobs:
           host: ${{ secrets.SSH_HOST }}
           username:  ${{ secrets.SSH_USER }}
           key:  ${{ secrets.SSH_PRIVATE_KEY }}
+          envs: APP_NAME,APP_OWNER
+        env:
+          APP_NAME: ${{ secrets.APP_NAME }}
+          APP_OWNER: ${{ secrets.APP_OWNER }}
+        with:
           script: |
             cd /var/www/environment 
             git pull origin main
-            
-      - name: Copy .env file
-        run: |
-          cp .env.example .env
-      
-      - name: Add variables to .env
-        run: |
-          echo "APP_OWNER=${{ secrets.APP_OWNER }}" >> .env
-      
-      - name: Update variables to .env
-        run: |
-          sed -i "s/^APP_NAME=.*/APP_NAME=${{ secrets.APP_NAME }}/" .env
+            sudo chmod +x deploy.sh
+            ./deploy.sh main

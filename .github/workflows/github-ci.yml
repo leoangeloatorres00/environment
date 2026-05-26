@@ -26,6 +26,6 @@ jobs:
           script: |
             cd /var/www/environment
             git pull origin main
-            chmod +x deploy.sh
+            sudo chmod +x deploy.sh
             ./deploy.sh main
-            chmod -x deploy.sh
+            sudo chmod -x deploy.sh

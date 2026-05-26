@@ -24,7 +24,8 @@ jobs:
           key:  ${{ secrets.SSH_PRIVATE_KEY }}
           envs: APP_NAME,APP_OWNER,MAIL_SENDER
           script: |
-            cd /var/www/environment 
+            cd /var/www/environment
+            rm -rf deploy.sh
             git pull origin main
             sudo chmod +x deploy.sh
             ./deploy.sh main
